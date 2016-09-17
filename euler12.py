@@ -1,21 +1,24 @@
-from eulerTools import triangleNumber
+from eulerTools import *
 
 factors = 0
-n = 0
+n = 2
 
-while 1:
+while True:
 	num = triangleNumber(n)
-	factors = 0
+
+	if str(num)[-1] != '0' or num % 12 != 0:
+		n += 1
+		continue
 	
-	for i in range(1,num+1):
-		if num % i == 0:
-			factors += 1
+	factors = getFactors(num)
 	
-	if factors > 500:
+	if len(factors) > 500:
 		break
 	
 	
-	print num, factors
+	if len(factors) > 200: print n, num, len(factors)
 	n += 1
 
-print num
+print n, num, len(factors)
+
+### Answer is 76576500 (12375th triangle number, 576 factors)
