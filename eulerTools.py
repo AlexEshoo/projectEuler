@@ -8,13 +8,28 @@ _primeList = []
 for line in f:
 	_primeList.append(int(line))
 
-def isPrime(num):
-	for i in range(2, num):
-		if num % i == 0:
-			return False
-			return False
-			
-	return True
+def isPrime(n):
+	"""
+	Stolen from 0007_overview
+	Author 'hk'
+	"""
+	if n == 1:
+		return False
+	elif n < 4:
+		return True
+	elif n % 2 == 0:
+		return False
+	elif n < 9:
+		return True
+	elif n % 3 == 0:
+		return False
+	else:
+		r = int(floor(sqrt(n)))
+		for f in range(5,r):
+			if n % f == 0: return False
+			if n % (f+2) == 0: return False
+			f += 6
+		return True
 	
 def triangleNumber(n):
 	## Arithmetic Series
@@ -24,7 +39,7 @@ def getFactors(num):
 	if num > 1:
 		factors = [1,num]
 		
-		end = int(round(sqrt(num))) #Only need to go up to sqrt of number
+		#end = int(round(sqrt(num))) #Only need to go up to sqrt of number
 		for i in range(2,num):
 			if num % i == 0:
 				factors.append(i)
