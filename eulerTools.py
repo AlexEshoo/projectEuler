@@ -7,6 +7,7 @@ global _primeList
 _primeList = []
 for line in f:
 	_primeList.append(int(line))
+f.close()
 
 def isPrime(n):
 	"""
