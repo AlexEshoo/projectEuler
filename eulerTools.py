@@ -26,7 +26,8 @@ def isPrime(n):
 		return False
 	else:
 		r = int(floor(sqrt(n)))
-		for f in range(5,r):
+		f = 5
+		while f <= r:
 			if n % f == 0: return False
 			if n % (f+2) == 0: return False
 			f += 6
