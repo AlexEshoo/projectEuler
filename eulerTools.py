@@ -67,5 +67,15 @@ def computeDn(primeFactors):
 	for key in primeFactors:
 		dn = dn*(primeFactors[key] + 1)
 	return dn
-	
+
+def isPermutation(n,m):
+	if n == m: return False
+	for l in str(n):
+		if l not in str(m):
+			return False
+	for l in str(m):
+		if l not in str(n):
+			return False
+	return True
+			
 
