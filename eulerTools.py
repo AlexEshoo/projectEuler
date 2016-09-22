@@ -38,6 +38,7 @@ def triangleNumber(n):
 	return n*(n+1)/2
 	
 def getFactors(num):
+	factors= []
 	if num > 1:
 		factors = [1,num]
 		
@@ -46,15 +47,18 @@ def getFactors(num):
 			if num % i == 0:
 				factors.append(i)
 	else:
-		print 'Trivial, you idiot'
+		factors.append(1)
+		return factors
 		
 	return factors
 	
 def getPrimeFactors(n):
 	primeFactors = {}
 	for p in _primeList:
-		if n % p != 0:
-			break # We are done.
+		if p > n:
+			break
+		elif n % p != 0:
+			continue
 		crunch = n
 		primeFactors[p] = 0
 		while crunch % p == 0:
@@ -78,5 +82,20 @@ def isPermutation(n,m):
 		if l not in str(n):
 			return False
 	return True
+	
+def getPattern(nums):
+	pat = None
+	pat = [nums[0]]
+	while len(pat) < len(nums):
+		for i in range(1,len(nums)/len(pat)):
+			if nums[i*len(pat):2*i*len(pat)] == pat:
+				if i == len(nums)/len(pat) - 1:
+					return pat
+				else:
+					continue
+			else:
+				pat = nums[:len(pat) + 1]
+				break
+				
+	return []
 			
-
