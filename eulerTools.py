@@ -87,15 +87,23 @@ def getPattern(nums):
 	pat = None
 	pat = [nums[0]]
 	while len(pat) < len(nums):
-		for i in range(1,len(nums)/len(pat)): # Causes hang when len(nums)/len(pat) == 1
-			if nums[i*len(pat):2*i*len(pat)] == pat:
-				if i == len(nums)/len(pat) - 1:
+		if len(nums)/len(pat) < 2:
+			return [] # Not possible to repeat anything
+		print "pat", pat
+		for i in range(0,len(nums)/len(pat)):
+			print i,"test list", nums[i*len(pat): (i+1)*len(pat)]
+			if nums[i*len(pat) : (i+1)*len(pat)] == pat:
+				print "MATCH!"
+				if i == len(nums)/len(pat) - 1 and len(nums)%len(pat) == 0:
+					print "DONE!"
+					return pat
+				elif i == len(nums)/len(pat) - 1 and pat[:len(nums) % len(pat)] == nums[-(len(nums) % len(pat)):]:
+					print "ALSO DONE"
 					return pat
 				else:
 					continue
 			else:
 				pat = nums[:len(pat) + 1]
 				break
-				
 	return []
 			
