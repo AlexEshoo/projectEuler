@@ -83,23 +83,31 @@ def isPermutation(n,m):
 			return False
 	return True
 	
-def getPattern(nums):
+def getPattern(nums, ignore_trunc = False):
+	"""
+	Finds a pattern (if any) in a given list.
+	Some nuances: If the pattern is truncated after being well established it will still return the pattern. (assumes it will repeat)
+	If the pattern is not well established, there will be nothing returned. Patterns must repeat at least once (2 sequences) before 
+	one will be detected.
+	
+	:parameters: nums: a list of items to be parsed. Can contain (almost?) anything.
+	
+	:returns: pat: A list containing a single repititon of the pattern of the nums list.
+	if there is no pattern pat = []
+	"""
 	pat = None
 	pat = [nums[0]]
 	while len(pat) < len(nums):
 		if len(nums)/len(pat) < 2:
-			return [] # Not possible to repeat anything
-		print "pat", pat
+			return [] # Not possible to repeat anything. If list has poorly defined pattern (truncated before first repititon) this will happen
 		for i in range(0,len(nums)/len(pat)):
-			print i,"test list", nums[i*len(pat): (i+1)*len(pat)]
 			if nums[i*len(pat) : (i+1)*len(pat)] == pat:
-				print "MATCH!"
-				if i == len(nums)/len(pat) - 1 and len(nums)%len(pat) == 0:
-					print "DONE!"
+				if i == len(nums)/len(pat) - 1 and (len(nums)%len(pat) == 0 or ignore_trunc == True):
 					return pat
 				elif i == len(nums)/len(pat) - 1 and pat[:len(nums) % len(pat)] == nums[-(len(nums) % len(pat)):]:
-					print "ALSO DONE"
 					return pat
+				elif i == len(nums)/len(pat) - 1:
+					return [] # Truncated section does not match.
 				else:
 					continue
 			else:
