@@ -88,3 +88,10 @@ ENV/
 # Rope project settings
 .ropeproject
 test.py
+answer.txt
+
+*.pdf
+*.log
+*.aux
+*.synctex.gz
+.gz
