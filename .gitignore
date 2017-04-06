@@ -90,7 +90,6 @@ ENV/
 test.py
 answer.txt
 
-*.pdf
 *.log
 *.aux
 *.synctex.gz
