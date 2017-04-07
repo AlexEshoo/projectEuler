@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,listings}
+
+\begin{document}
+	
+	\section*{Problem 39}
+		
+		We can use Euclid's formula to solve this one.
+		
+		\begin{align}
+			a &= k(m^2-n^2)
+			b &= k(2mn)
+			c &= k(m^2+n^2)
+		\end{align}
+		
+		This set of equations will generate all of the Pythagorean triples provided that \(m>n\) and that \(m\) and \(n\) are coprime and not both odd. This makes the problem easy.
+		
+		Further we can provide constrains on the values of $m$ and $n$ given the problem statement that \(p \le 1000\). From this we can put an upper bound on \(c < 1000\) since if any of the three were 1000, this would exceed the perimeter by definition. Then we have a bound on \(k\) which is that \(k(m^2+n^2\le 1000\) and given that the smallest values of $m$ and $n$ are 2 and 1 respectively, the upper bound on k is:
+		
+		\[k \le 1000/5 = 200\]
+		
+		Then we can make constraints on $m$ and $n$ similarly using the same relation. For n:
+		
+		\[n\le \sqrt{1000-m^2}\rightarrow n\le \sqrt{1000-4}\]
+		
+		And using a floor function on the square root, we find \(n \le 31\). by the exact same principles, we find \(m \le 31\) as well.
+		
+\begin{lstlisting}[language=Python]
+for n in range(1,32):
+	for m in range(n+1,32):
+		if not gcd(m,n) == 1:
+			continue
+		if (m % 2 != 0) and (n % 2 != 0):
+			continue
+		if n >= m:
+			continue
+		for k in range(1,201):
+			a = k * (m**2 - n**2)
+			b = k * 2 * n * m
+			c = k * (m**2 + n**2)
+
+			p = a + b + c
+
+			if p > 1000:
+				continue 
+
+			triples[p].append((a,b,c))
+\end{lstlisting}
+		
+\end{document}
