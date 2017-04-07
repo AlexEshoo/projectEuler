@@ -114,4 +114,20 @@ def getPattern(nums, ignore_trunc = False):
 				pat = nums[:len(pat) + 1]
 				break
 	return []
-			
+    
+def gcd(a,b):
+    """
+    Finds the Greates common divisor between two numbers
+    """
+    
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
+    
+    
+    
+    
+    
+    
+    

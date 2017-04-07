@@ -94,3 +94,4 @@ answer.txt
 *.aux
 *.synctex.gz
 .gz
+output.json
