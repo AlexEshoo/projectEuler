@@ -1,5 +1,3 @@
-import numpy as np
-
 tri =   [
         [75],
         [95,64],
@@ -18,14 +16,18 @@ tri =   [
         [04,62,98,27,23,9,70,98,73,93,38,53,60,04,23],
     ]
 
-bool_tri = [[]]*len(tri)
+bool_tri = []
 for row in tri:
-    for i in row:
-        index = tri.index(row)
-        bool_tri[index].append(True)
+    bool_tri.append([False]*len(row))
 
-print len(bool_tri[-1])
-print len(tri[-1])
-
-for row in tri:
-    path = []
+path = []
+for j in range(len(tri)):
+    for i in range(len(tri[j])):
+        if not bool_tri[j][i]:
+            path.append(tri[j][i])
+            break
+        elif not bool_tri[j][i+1]
+            path.append(tri[j][i+1])
+            break
+        
+print path
