@@ -16,18 +16,14 @@ tri =   [
         [04,62,98,27,23,9,70,98,73,93,38,53,60,04,23],
     ]
 
-bool_tri = []
-for row in tri:
-    bool_tri.append([False]*len(row))
-
-path = []
-for j in range(len(tri)):
-    for i in range(len(tri[j])):
-        if not bool_tri[j][i]:
-            path.append(tri[j][i])
-            break
-        elif not bool_tri[j][i+1]
-            path.append(tri[j][i+1])
-            break
+def recSumAtRow(rowData, rowNum):
+    for i in range(len(rowData[rowNum])):
+        rowData[rowNum][i] += max([rowData[rowNum+1][i], rowData[rowNum+1][i+1]])
         
-print path
+    if len(rowData[rowNum]) == 1: return rowData[rowNum][0]
+    
+    else: return recSumAtRow(rowData, rowNum-1)
+    
+result = recSumAtRow(tri, len(tri)-2)
+
+print result
