@@ -33,4 +33,5 @@ for key in keys():
 
     if flag:
         print(get_text(decrypted))
-        print(sum(decrypted))
+        print(sum(decrypted))  # 107359
+        print(get_text(key))  # god
