@@ -33,6 +33,20 @@ def isPrime(n):
             f += 6
         return True
 
+def gen_primes():
+    """
+    Generator object to generate infinite sequence of primes.
+    :return:
+    """
+
+    n = 1
+    while True:
+        while not isPrime(n):
+            n += 1
+
+        yield n
+        n += 1
+
 def triangleNumber(n):
     ## Arithmetic Series
     return n*(n+1)/2
