@@ -102,10 +102,55 @@ def determine_winner(hand1:PokerHand, hand2:PokerHand):
         if hand2.is_straight_flush():
             if hand1.high_card > hand2.high_card:
                 return hand1
-            else:
 
+            return hand2
 
+        return hand1
 
+    if hand1.n_of_a_kinds(4):
+        if hand2.n_of_a_kinds(4):
+            if hand1.high_card > hand2.high_card:
+                return hand1
+
+            return hand2
+
+        return hand1
+
+    if hand1.is_full_house():
+        if hand2.is_full_house():
+            if hand1.high_card > hand2.high_card:
+                return hand1
+
+            return hand2
+
+        return hand1
+
+    if hand1.is_flush():
+        if hand2.is_flush():
+            if hand1.high_card > hand2.high_card:
+                return hand1
+
+            return hand2
+
+        return hand1
+
+    if hand1.is_straight():
+        if hand2.is_straight():
+            if hand1.high_card > hand2.high_card:
+                return hand1
+
+            return hand2
+
+        return hand1
+
+    if hand1.n_of_a_kinds(3):
+        if hand2.n_of_a_kinds(3):
+            if hand1.high_card > hand2.high_card:
+                return hand1
+
+            return hand2
+
+        return hand1
 
 if __name__ == '__main__':
     cards = [Card('H', 10),
