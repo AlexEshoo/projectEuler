@@ -51,6 +51,12 @@ def triangleNumber(n):
     ## Arithmetic Series
     return n*(n+1)/2
 
+def is_triangular(n):
+    if sqrt(8 * n + 1) % 1 == 0:
+        return True
+
+    return False
+
 def getFactors(num):
     factors= []
     if num > 1:
