@@ -10,7 +10,7 @@ while True:
         n += 1
         continue
 
-    factors = proper_divisors(num)
+    factors = proper_divisors(int(num))
 
     if len(factors) > 500:
         break

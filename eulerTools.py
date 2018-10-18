@@ -63,7 +63,7 @@ def proper_divisors(num):
         factors = [1,num]
 
         #end = int(round(sqrt(num))) #Only need to go up to sqrt of number
-        for i in range(2,num):
+        for i in range(2, num):
             if num % i == 0:
                 factors.append(i)
     else:
