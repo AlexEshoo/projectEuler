@@ -57,7 +57,7 @@ def is_triangular(n):
 
     return False
 
-def getFactors(num):
+def proper_divisors(num):
     factors= []
     if num > 1:
         factors = [1,num]

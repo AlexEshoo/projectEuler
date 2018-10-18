@@ -1,7 +1,7 @@
 from eulerTools import *
 
 def sumFactors(n):
-	f = getFactors(n)
+	f = proper_divisors(n)
 	if n in f:
 		factors = f[2:]
 		return sum(factors) + 1
