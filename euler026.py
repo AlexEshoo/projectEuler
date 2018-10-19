@@ -1,21 +1,37 @@
 from eulerTools import *
-import decimal
-# Need to be able to find patterns after initial numbers in decimal like in 1/6 for example...
-decimal.getcontext().prec = 500
-longest = 0
-longpat = []
-win = None
-for i in range(2, 1000):
-	num = decimal.Decimal(1)/decimal.Decimal(i)
-	dec = [ int(j) for j in str(num) if j != '.']
-	dec = dec[1:]
-	
-	pat = getPattern(dec, ignore_trunc = True) # Need to ignore the truncated part since rounding error is a thing.
-	if len(pat) > longest: 
-		longest = len(pat)
-		longpat = pat
-		win = i
 
-print longpat
-print longest
-print win
+primes = gen_primes()
+
+
+def cyclic_nums(p):
+    b = 10
+    t = 0
+    r = 1
+    n = 0
+    while True:
+        t = t + 1
+        x = r * b
+        d = int(x / p)
+        r = x % p
+        n = n * b + d
+        if r == 1:
+            break
+
+    if t == p - 1:
+        return n
+
+
+prime = next(primes)  # Skip 2
+winner = prime
+longest = '0'
+
+while prime < 1000:
+    prime = next(primes)
+    if 10 % prime == 0:
+        continue
+    cycle = cyclic_nums(prime)
+    if cycle and len(str(cycle)) > len(longest):
+        longest = str(cycle)
+        winner = prime
+
+print("Answer:", winner, len(longest))  # 983

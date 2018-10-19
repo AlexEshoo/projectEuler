@@ -126,7 +126,7 @@ def getPattern(nums, ignore_trunc = False):
 
     :parameters: nums: a list of items to be parsed. Can contain (almost?) anything.
 
-    :returns: pat: A list containing a single repititon of the pattern of the nums list.
+    :returns: pat: A list containing a single repetition of the pattern of the nums list.
     if there is no pattern pat = []
     """
     pat = None
