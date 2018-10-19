@@ -57,10 +57,10 @@ def is_triangular(n):
 
     return False
 
-def proper_divisors(num):
+def divisors(num):
     factors= []
     if num > 1:
-        factors = [1,num]
+        factors = [1, num]
 
         #end = int(round(sqrt(num))) #Only need to go up to sqrt of number
         for i in range(2, num):
@@ -71,6 +71,20 @@ def proper_divisors(num):
         return factors
 
     return factors
+
+def proper_divisors(n):
+    result = divisors(n)
+    result.remove(n)
+    return result
+
+def is_perfect(n):
+    return sum(proper_divisors(n)) == n
+
+def is_abundant(n):
+    return sum(proper_divisors(n)) > n
+
+def is_deficient(n):
+    return sum(proper_divisors(n)) < n
 
 def getPrimeFactors(n):
     primeFactors = {}
