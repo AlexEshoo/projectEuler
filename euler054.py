@@ -4,7 +4,8 @@ class Card(object):
     FACE_CARD_RANK = {'A': 14,
                       'K': 13,
                       'Q': 12,
-                      'J': 11}
+                      'J': 11,
+                      'T': 10}
 
     def __init__(self, suit, rank):
         self.suit = suit
@@ -41,6 +42,18 @@ class PokerHand(object):
     def n_of_a_kinds(self, n):
         ranks = [c.rank for c in self.cards]
         return [r for r, m in Counter(ranks).items() if m == n]
+
+    def two_of_a_kinds(self):
+        return self.n_of_a_kinds(2)
+
+    def is_two_pair(self):
+        return len(self.two_of_a_kinds()) == 2
+
+    def three_of_a_kind(self):
+        return self.n_of_a_kinds(3)
+
+    def four_of_a_kind(self):
+        return self.n_of_a_kinds(4)
 
     def is_straight(self):
         s = self.sorted_hand()
@@ -88,83 +101,132 @@ class PokerHand(object):
         s = sorted(self.cards)
         return s
 
+def get_highest_unique_card(h1, h2):
+    print("call")
+    print(h1.cards, h2.cards)
+    if max(h1.cards) > max(h2.cards):
+        return h1
+    elif max(h2.cards) > max(h1.cards):
+        return h2
+    else:
+        cards1 = [c for c in h1.cards if c.rank not in [max(h1.cards)]]
+        cards2 = [c for c in h2.cards if c.rank not in [max(h2.cards)]]
+        return get_highest_unique_card(PokerHand(cards1), PokerHand(cards2))
 
 def determine_winner(hand1:PokerHand, hand2:PokerHand):
-    winner = None
+    functions = [PokerHand.is_royal_flush,
+                 PokerHand.is_straight_flush,
+                 PokerHand.four_of_a_kind,
+                 PokerHand.is_full_house,
+                 PokerHand.is_flush,
+                 PokerHand.is_straight,
+                 PokerHand.three_of_a_kind,
+                 PokerHand.is_two_pair,
+                 PokerHand.two_of_a_kinds]
 
-    # Rules dont specify who wins in the event of two royal flushes, so assume that won't happen
-    if hand1.is_royal_flush():
-        return hand1
-    if hand2.is_royal_flush():
-        return hand2
+    for f in functions:
+        if f(hand1) or f(hand2):
+            print('\n', f.__name__)
+            print("Match!")
+            if f(hand1) and f(hand2):
+                print("Both had same match")
+                if f is PokerHand.two_of_a_kinds or f is PokerHand.is_two_pair:
+                    print("two of a kind function")
+                    if max(hand1.two_of_a_kinds()) > max(hand2.two_of_a_kinds()):
+                        print("hand 1 had higher pair")
+                        return hand1
 
-    if hand1.is_straight_flush():
-        if hand2.is_straight_flush():
-            if hand1.high_card > hand2.high_card:
+                    elif max(hand1.two_of_a_kinds()) == max(hand2.two_of_a_kinds()):
+                        print("hands had same pair")
+                        high_rem1 = max([c for c in hand1.cards if c.rank not in hand1.two_of_a_kinds()])
+                        print("high_rem1", high_rem1)
+                        high_rem2 = max([c for c in hand2.cards if c.rank not in hand2.two_of_a_kinds()])
+                        print("high_rem2", high_rem2)
+
+                        if high_rem1 > high_rem2:
+                            return hand1
+                        return hand2
+
+                    else:
+                        print("hand2 had higher pair")
+                        return hand2
+
+                elif f is PokerHand.is_full_house:
+                    print("Full House Function")
+                    if max(hand1.three_of_a_kind()) > max(hand2.three_of_a_kind()):
+                        print("Hand1 has higher Threeofkind")
+                        return hand1
+
+                    # Assuming a 52 card deck, the three of a kind can never be the same.
+                    # elif max(hand1.three_of_a_kind()) == max(hand2.three_of_a_kind()):
+                    #     print("Both have same threeofkind")
+                    #     if max(hand1.two_of_a_kinds()) > max(hand2.two_of_a_kinds()):
+                    #         print("hand 1 had higher pair")
+                    #         return hand1
+                    #
+                    #     elif max(hand1.two_of_a_kinds()) == max(hand2.two_of_a_kinds()):
+                    #         print("hands had same pair")
+                    #         high_rem1 = max([c for c in hand1.cards if c.rank not in hand1.two_of_a_kinds().extend(hand1.three_of_a_kind())])
+                    #         print("high_rem1", high_rem1)
+                    #         high_rem2 = max([c for c in hand2.cards if c.rank not in hand2.two_of_a_kinds().extend(hand2.three_of_a_kind())])
+                    #         print("high_rem2", high_rem2)
+                    #
+                    #         if high_rem1 > high_rem2:
+                    #             return hand1
+                    #         return hand2
+                    #
+                    #     else:
+                    #         print("hand2 had higher pair")
+                    #         return hand2
+
+                    else:
+                        print("hand2 has higher threeofkind")
+                        return hand2
+
+                if hand1.high_card > hand2.high_card:
+                    print("higher card in hand1")
+                    print(hand1.high_card, hand2.high_card)
+                    return hand1
+
+                print("higher card in hand2")
+                print(hand1.high_card, hand2.high_card)
+                return hand2
+
+            if hand1.is_straight_flush():
+                print("only hand1 matched")
                 return hand1
 
+            print("only hand 2 matched")
             return hand2
 
+    print("no matches, checking high card.")
+    print(hand1.high_card, hand2.high_card)
+    if hand1.high_card > hand2.high_card:
         return hand1
 
-    if hand1.n_of_a_kinds(4):
-        if hand2.n_of_a_kinds(4):
-            if hand1.high_card > hand2.high_card:
-                return hand1
-
-            return hand2
-
-        return hand1
-
-    if hand1.is_full_house():
-        if hand2.is_full_house():
-            if hand1.high_card > hand2.high_card:
-                return hand1
-
-            return hand2
-
-        return hand1
-
-    if hand1.is_flush():
-        if hand2.is_flush():
-            if hand1.high_card > hand2.high_card:
-                return hand1
-
-            return hand2
-
-        return hand1
-
-    if hand1.is_straight():
-        if hand2.is_straight():
-            if hand1.high_card > hand2.high_card:
-                return hand1
-
-            return hand2
-
-        return hand1
-
-    if hand1.n_of_a_kinds(3):
-        if hand2.n_of_a_kinds(3):
-            if hand1.high_card > hand2.high_card:
-                return hand1
-
-            return hand2
-
-        return hand1
+    return hand2
 
 if __name__ == '__main__':
-    cards = [Card('H', 10),
-             Card('H', 12),
-             Card('H', 14),
-             Card('H', 13),
-             Card('D', 11)]
-    hand = PokerHand(cards)
-    print(hand.cards)
-    print(hand.sorted_hand())
-    print("High Card:", hand.high_card)
-    print("Two of a Kind:", hand.n_of_a_kinds(2))
-    print("Straight", hand.is_straight())
-    print("Flush", hand.is_flush())
-    print("Full House", hand.is_full_house())
-    print("Straight Flush", hand.is_straight_flush())
-    print("Royal Flush", hand.is_royal_flush())
+    with open(r"C:\GitHub\projectEuler\resources\p054_test_cases.txt", 'r') as file:
+        hand1wins = 0
+        for n, line in enumerate(file):
+            all_cards = line.strip().split(' ')
+            h1 = PokerHand([Card.from_txt(c) for c in all_cards[:5]])
+            h2 = PokerHand([Card.from_txt(c) for c in all_cards[5:]])
+
+            winner = determine_winner(h1, h2)
+
+            print(get_highest_unique_card(h1,h2))
+
+            if winner is h1:
+                hand1wins += 1
+                print(f"Hand 1 Wins deal {n + 1} (lineno)")
+
+            else:
+                print(f"Hand 2 Wins Deal {n + 1} (lineno)")
+
+            print()
+            print("="*20)
+            print()
+
+        print(hand1wins)
