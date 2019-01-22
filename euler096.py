@@ -22,6 +22,9 @@ class Board(object):
         while self.step():
             pass
 
+        if not 0 in self.solution:
+            return  # puzzle fully solved.
+
     def step(self):
         for i in range(Board.rows):
             for j in range(Board.cols):
@@ -58,6 +61,10 @@ class Board(object):
 
         return nonet_list
 
+    @property
+    def solution_number(self):
+        return "".join([str(self.solution[0,i]) for i in range(3)])
+
 if __name__ == '__main__':
     with open("resources/p096_sudoku.txt") as f:
         f.readline()  # skip first line
@@ -80,4 +87,4 @@ if __name__ == '__main__':
     for g in grids:
         b = Board(g)
         b.solve()
-        print(b.solution)
+        print(b.solution_number)
