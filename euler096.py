@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 class Board(object):
     rows = 9
@@ -24,6 +25,23 @@ class Board(object):
 
         if not 0 in self.solution:
             return  # puzzle fully solved.
+
+        for i in range(Board.rows):
+            for j in range(Board.cols):
+                new_board = Board(self.solution)
+
+                if new_board.possible_values[i][j]:
+                    val = random.sample(new_board.possible_values[i][j], 1)[0]
+                    new_board.possible_values[i][j].remove(val)
+                    new_board.put_value(val, i, j)
+
+                    new_board.solve()
+
+                    if not 0 in new_board.solution:
+                        self.possible_values = new_board.possible_values
+                        self.solution = new_board.solution
+                        return # puzzle solved
+
 
     def step(self):
         for i in range(Board.rows):
@@ -63,7 +81,7 @@ class Board(object):
 
     @property
     def solution_number(self):
-        return "".join([str(self.solution[0,i]) for i in range(3)])
+        return int("".join([str(self.solution[0,i]) for i in range(3)]))
 
 if __name__ == '__main__':
     with open("resources/p096_sudoku.txt") as f:
@@ -84,7 +102,14 @@ if __name__ == '__main__':
 
         grids.append(np.array(gg, dtype=int))
 
+    answer = 0
     for g in grids:
         b = Board(g)
         b.solve()
-        print(b.solution_number)
+        if '0' in str(b.solution_number):
+            print("SOLUTION NUMBER CONTAINED 0")
+
+        answer += b.solution_number
+        print(b.solution)
+
+    print(answer)
